@@ -35,7 +35,7 @@ export default function Signup() {
           <label htmlFor="email">Email</label>
           <input
             id="email"
-            type="email"
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -48,8 +48,7 @@ export default function Signup() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            minLength={8}
-            required
+            
           />
         </div>
         <button className="btn btn-primary" type="submit" disabled={submitting}>
