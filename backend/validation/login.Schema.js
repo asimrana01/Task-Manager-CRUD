@@ -1,2 +1,5 @@
 const z=require("zod")
-const loginSchema=z.string.extend()
+const SignUpSchema=require("../validation/signup.Schema")
+const loginSchema= SignUpSchema
+
+module.exports=loginSchema
