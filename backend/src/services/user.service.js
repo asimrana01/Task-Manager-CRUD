@@ -1,12 +1,13 @@
 const userRepo = require("../repositories/user.repo")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const AppError=require("../utils/AppError")
 require("dotenv").config()
 
 async function signUp(email, password) {
     const user = await userRepo.findByEmail(email)
     if (user) {
-        throw { status: 409, message: "User already exists" }
+        throw new AppError("User Already exists",409)
     }
     const encrypted = await bcrypt.hash(password, 10)
     await userRepo.createUser({ email: email, password: encrypted })
@@ -16,11 +17,11 @@ async function signUp(email, password) {
 async function login(email, enteredPassword) {
     const user = await userRepo.findByEmail(email)
     if (!user) {
-        throw { status: 404, message: "User does not exists" }
+        throw new AppError("User does not exists",404)
     }
     const match = await bcrypt.compare(enteredPassword, user.password)
     if (!match) {
-        throw { status: 401, message: "Incorrect Email or Password" }
+        throw new AppError("Incorrect email or Password",401)
     }
     const token = jwt.sign(
         { id: user._id },

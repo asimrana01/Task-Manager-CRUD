@@ -1,29 +1,25 @@
 const userService = require("../services/user.service")
+const AppError=require("../utils/AppError")
 
 async function signUp(req, res) {
-    try {
         const { email, password } = req.body
         if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" })
+            throw new AppError("Email and Password required",400)
         }
         const result = await userService.signUp(email, password)
-        res.status(result.status).json({ message: result.message })
-    } catch (error) {
-        res.status(error.status || 500).json({ message: error.message })
-    }
+       return res.status(201).json({ message: result.message })
+     
 }
 
 async function login(req, res) {
-    try {
+    
         const { email, password } = req.body
         if (!email || !password) {
-            return res.status(400).json({ message: "Email and password are required" })
+            throw new AppError("Email and Password required",400)
         }
         const result = await userService.login(email, password)
-        res.status(result.status).json({ message: result.message, token: result.token })
-    } catch (error) {
-        res.status(error.status || 500).json({ message: error.message })
-    }
+        return res.status(201).json({ message: result.message, token: result.token })
+
 }
 
 module.exports = { signUp, login }

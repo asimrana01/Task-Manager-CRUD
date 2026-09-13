@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const errorHandler=require("../src/middlewares/errorHandler.middleware")
 require("dotenv").config()
 
 const authRoutes = require("./routes/auth.routes")
@@ -24,5 +25,7 @@ app.use("/tasks", taskRoutes)
 app.get("/", (req, res) => {
     res.json({ message: "Task Manager API is running" })
 })
+app.use(errorHandler)
+
 
 module.exports = app
