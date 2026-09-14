@@ -11,7 +11,7 @@ async function signUp(email, password) {
     }
     const encrypted = await bcrypt.hash(password, 10)
     await userRepo.createUser({ email: email, password: encrypted })
-    return { status: 201, message: "Account created Successful" }
+    return { status: 200, message: "Account created Successful" }
 }
 
 async function login(email, enteredPassword) {

@@ -7,8 +7,9 @@ require("dotenv").config()
 dns.setServers(["8.8.8.8", "8.8.4.4"])
 
 const connectDB = async function () {
+    const mongoURI=process.env.NODE_ENV==="test" ? process.env.MONGO_URI_TEST :process.env.MONGO_URI
     try {
-        await mongoose.connect(process.env.MONGO_URI)
+        await mongoose.connect(mongoURI)
         console.log("Database Connected")
     } catch (error) {
         console.log("DB Connection failed", error.message)

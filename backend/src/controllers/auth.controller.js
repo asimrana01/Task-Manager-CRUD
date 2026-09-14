@@ -18,7 +18,7 @@ async function login(req, res) {
             throw new AppError("Email and Password required",400)
         }
         const result = await userService.login(email, password)
-        return res.status(201).json({ message: result.message, token: result.token })
+        return res.status(200).json({ message: result.message, token: result.token })
 
 }
 
