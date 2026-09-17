@@ -30,5 +30,19 @@ async function login(email, enteredPassword) {
     )
     return { status: 200, message: "Login Successful", token: token }
 }
+async function forgotPassword(email) {
+  const user = await userRepo.findByEmail(email);
+  if (!user) {
+    throw new AppError("User does not exist", 404);
+  }
+
+  const otp = Math.floor(Math.random() * 900000) + 100000;
+  const otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+
+  await userRepo.updateUser(email, { otp, otpExpiry });
+  await sendOtpEmail(email, otp);
+
+  return { status: 200, message: "OTP sent to email" };
+}
 
 module.exports = { signUp, login }
