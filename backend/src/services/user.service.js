@@ -1,7 +1,9 @@
 const userRepo = require("../repositories/user.repo")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const crypto = require("crypto")
 const AppError=require("../utils/AppError")
+const sendOtpEmail  = require("../utils/sendOtpEmail")
 require("dotenv").config()
 
 async function signUp(email, password) {
@@ -36,13 +38,14 @@ async function forgotPassword(email) {
     throw new AppError("User does not exist", 404);
   }
 
-  const otp = Math.floor(Math.random() * 900000) + 100000;
-  const otpExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+  const otp = crypto.randomInt(100000,1000000).toString()
+  const hashedOtp=await bcrypt.hash(otp,10)
+  const otpExpiry = new Date(Date.now() + 5 * 60 * 1000) // 5 minutes from now
+  await userRepo.updateUser(email, { otp: hashedOtp, otpExpiry });
 
-  await userRepo.updateUser(email, { otp, otpExpiry });
   await sendOtpEmail(email, otp);
+ return {message:"OTP has been sent"}
 
-  return { status: 200, message: "OTP sent to email" };
 }
 
-module.exports = { signUp, login }
+module.exports = { signUp, login , forgotPassword}

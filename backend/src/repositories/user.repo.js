@@ -11,5 +11,7 @@ async function findByEmail(email) {
 async function findById(id) {
     return await userModel.findById(id)
 }
-
-module.exports = { createUser, findByEmail, findById }
+async function updateUser(email,updates){
+    return await userModel.updateOne({email},{$set:updates})
+}
+module.exports = { createUser, findByEmail, findById ,updateUser }

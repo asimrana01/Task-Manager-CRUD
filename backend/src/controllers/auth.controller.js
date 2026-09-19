@@ -21,5 +21,10 @@ async function login(req, res) {
         return res.status(200).json({ message: result.message, token: result.token })
 
 }
+async function forgotPassword(req,res){
+    const {email}=req.body
+    const result=await userService.forgotPassword(email)
+    return res.status(200).json({message:result.message})
 
-module.exports = { signUp, login }
+}
+module.exports = { signUp, login ,forgotPassword}
