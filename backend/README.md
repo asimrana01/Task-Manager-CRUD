@@ -44,11 +44,7 @@ npm run dev    # with nodemon, auto-restarts on changes
 npm start
 ```
 
-You should see:
-```
-Server running on port 3000
-Database Connected
-```
+
 
 ## API Reference
 
